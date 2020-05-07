@@ -1,0 +1,61 @@
+.gallry{
+    margin:10px 50px;
+}
+.gallry img{
+    transition:1s;
+    padding:15px;
+    width:200px;
+}
+.gallry img:hover{
+    filter:grayscale(100%);
+    transform:scale(1.1);
+}
+.h_rent{
+    margin:10px 50px;
+}
+.h_rent .disp_area{
+    padding:15px;
+}
+.disp_price .btn{
+    margin-top:10px;
+}
+.disp_price .price{
+    font-size:35px;
+}
+.modalCenter{
+    top:50%!important;
+    transform:translateY(-50%)!important;
+}
+
+.ownserinfo{
+    margin-top:8px;
+    color:#474949;
+    font-size:17px;
+    font-weight:700;
+    text-transform: capitalize;
+    border-style: groove;
+    padding-left:15px;
+    padding-top:5px;
+    transition: 0.5s;
+}
+.ownserinfo:hover{
+    color:#2A282B ;
+}
+.modal-body .form-group input{
+    border-top:none;
+    border-left:none;
+    border-right:none;
+    border-bottom-color:#333;
+    color:#474949;
+    transition: 0.5s;
+}
+.modal-body .form-group input:hover,input:active,input:focus{
+    outline:0px !important;
+    -webkit-appearance:none;
+    box-shadow: none !important;
+}
+.modal-body .form-group input:hover{
+    border-bottom-color:rgb(0, 68, 255)	;
+}
+
+    

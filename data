@@ -1,0 +1,624 @@
+
+<div class="container-fluid">
+
+  <div id="record_content">
+
+  </div>
+
+
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">
+    Resale Property Details  
+    </h6>
+  </div>
+
+ 
+  <div class="card-body">
+
+    <div class="table-responsive">
+
+      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+       
+          <tr>
+            <th>resale_Id</th>
+            <th>UserId</th>
+            <th>resale_amount</th>
+            <th>city</th>
+            <th>state</th>
+            <th>pin</th>
+          
+            <th>DELETE </th>
+          </tr>
+        </thead>
+        <tbody>
+        <?php $sql="SELECT * FROM resaleproperty";
+   $result=query_r($sql);
+    $conn=confirmation1($result);
+    $rows=mysqli_fetch_all($result,MYSQLI_ASSOC);
+    foreach($rows as $row){            
+      ?>
+          <tr>
+            <td><?php echo $row['resale_id'];?></td>
+            <td>
+            <div contentEditable='true'> 
+               <?php echo $row['resale_amount']; ?>
+            </div> 
+     </td>
+            <td><?php echo $row['resale_amount'];?></td>
+            <td><?php echo $row['city'];?></td>
+            <td><?php echo $row['state'];?></td>
+            <td><?php echo $row['zip'];?></td>
+            
+            <td>
+               
+                  <button type="submit" name="delete_btn" class="btn btn-danger" > DELETE</button>
+              
+            </td>
+          </tr>
+    <?php }?>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- rent -->
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">
+    Rent Property Details  
+    </h6>
+  </div>
+
+ 
+  <div class="card-body">
+
+    <div class="table-responsive">
+
+      <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
+        <thead>
+       
+          <tr>
+            <th>RentId</th>
+            <th>UserId</th>
+            <th>Deposit</th>
+            <th>Rent</th>
+            <th>city</th>
+            <th>state</th>
+            <th>pin</th>
+            <th>DELETE </th>
+          </tr>
+        </thead>
+        <tbody>
+        <?php $sql="SELECT * FROM rentproperty";
+   $result=query_r($sql);
+    $conn=confirmation1($result);
+    $rows=mysqli_fetch_all($result,MYSQLI_ASSOC);
+    foreach($rows as $row){            
+      ?>
+          <tr>
+            <td><?php echo $row['rental_id'];?></td>
+            <td><?php echo $row['uid'];?></td>
+            <td><?php echo $row['deposite_amount'];?></td>
+            <td><?php echo $row['monthly_rent'];?></td>
+            <td><?php echo $row['city'];?></td>
+            <td><?php echo $row['state'];?></td>
+            <td><?php echo $row['zip'];?></td>
+          
+            <td>
+                  <button type="submit" name="delete_btn" class="btn btn-danger"> DELETE</button>
+            </td>
+          </tr>
+    <?php }?>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+<!-- rent -->
+
+</div>
+<!-- /.container-fluid -->
+
+
+
+
+
+
+
+if(isset($_POST['readrecord'])){
+        $data='       
+<div class="card-body">
+<div class="table-responsive">
+  <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
+    <thead>
+      <tr>
+        <th>RentId</th>
+        <th>UserId</th>
+        <th>Deposit</th>
+        <th>Rent</th>
+        <th>city</th>
+        <th>state</th>
+        <th>pin</th>
+        <th>DELETE </th>
+      </tr>
+    </thead>
+    <tbody>
+        ';
+        $sql="SELECT * FROM rentproperty";
+        $result=query_r($sql);
+         $conn=confirmation1($result);
+        //  $rows=mysqli_fetch_all($result,MYSQLI_ASSOC);
+        if(mysqli_num_rows($result)>0){
+            $num=1;
+            while($row=mysqli_fetch_array()){
+              $data.= '<tr>
+                <td>'. $row['rental_id'].'</td>
+                <td>'. $row['uid'].'</td>
+                <td>'. $row['deposite_amount'].'</td>
+                <td>'. $row['monthly_rent'].'</td>
+                <td>'. $row['city'].'</td>
+                <td>'. $row['state'].'</td>
+                <td>'. $row['zip'].'</td>
+                <td>
+                <button onclick="GetpropertyDetail('.$row['rental_id'].')" class="btn btn-success"> EDIT</button>
+                 </td>
+                <td>
+                      <button onclick="deleteproperty('.$row['rental_id'].')" class="btn btn-danger"> DELETE</button>
+                </td>
+              </tr>';
+              $num++;
+            }
+        }
+        
+        $data.='
+        </tbody>
+        </table>
+      </div>
+    </div>    
+        ';
+        echo $data;
+}
+
+
+
+//img
+
+ <?php
+include("include/config.php");
+include("include/functions.php");
+$msg1=" ";$msg2=" ";$msg3=" ";$msg4=" ";$msg5=" ";$msg6=" ";$msg7=" ";$msg8=" ";$msg9=" ";$msg10=" ";$diff= " ";
+$firstname=' ';$lastname=' ';$email=' ';$date=' ';$password='';$c_password='';$image=' ';$tmp_name=''; 
+
+if(isset($_POST['submit']))
+ {
+   $firstname=mysqli_real_escape_string($con,$_POST['fname']);
+   $lastname=mysqli_real_escape_string($con,$_POST['lname']);
+   $email=mysqli_real_escape_string($con,$_POST['mail']);
+   $date=$_POST['dob'];
+   $password=$_POST['pswd'];
+   $c_password=$_POST['cpswd'];
+   
+   $image=$_FILES['image']['name'];
+   $tmp_image=$_FILES['image']['tmp_name'];
+   $size_image=$_FILES['image']['size'];
+   $checkbox=isset($_POST['check']);
+
+   //condition
+
+   if(strlen($firstname)<3)
+    {
+        $msg1="<div class='error'>First name must contain atleast 3 characters</div>";
+    }
+   elseif (strlen($lastname)<3) 
+   {
+        $msg2="<div class='error'>Last name must contain atleast 3 characters</div>";
+   }
+   elseif (!filter_var($email,FILTER_VALIDATE_EMAIL)) 
+   {
+       $msg3="<div class='error'>Please enter valid email</div>";
+   }
+   else if(email_exists($email,$con))
+    {
+      $msg3="<div class='error'>Email exists</div>";  
+    }
+   elseif (empty($date))
+    {
+       $msg4="<div class='error'>Please enter your Date of Birth</div>";
+    }
+    //    elseif($date==true)
+    //    {
+    //     $today= date("Y-m-d");
+    //     $diff=date_diff(date_create($date), date_create($today));
+    //     $dif=$diff->format('%y');
+    //   } 
+
+    //      elseif($dif<18)
+    //     {
+    //       $msg4= "<div class= 'error'>Minimum Age should be 18 years</div>";
+    //     }
+
+    elseif (empty($password))
+    {
+      $msg5="<div class='error'>Please Enter Your Password</div>";
+    }  
+   elseif (strlen($password)<6)
+    {
+       $msg5="<div class='error'>Password must contain atleast 6 characters</div>";
+   }
+
+   elseif ($password!==$c_password)
+    {
+      $msg6="<div class='error'>Password must be same</div>";
+    }
+    elseif ($image=='') 
+    {
+      $msg7="<div class='error'>Please upload your profile image</div>";
+    }
+    elseif ($size_image>1000000) 
+    {
+      $msg7="<div class='error'>Please upload Image less than 1 MB</div>";
+    }
+    elseif ($checkbox==0) 
+    {
+      $msg8="<div class='error'>Please Agree our terms and conditions</div>";
+    }
+    else
+      {
+        $password=md5($password);
+        $img_ext=explode(".",$image);
+        $image_ext=$img_ext['1'];
+        $image=rand(1,100).rand(1,100).time().".".$image_ext;
+        if($image_ext=='jpg' || $image_ext=='png' || $image_ext=='jpeg' || $image_ext=='JPG' || $image_ext=='PNG' || $image_ext=='JPEG')
+         { 
+        move_uploaded_file($tmp_image,"users_image/$image");
+        mysqli_query($con,"INSERT INTO users(first_name,last_name,mail,dob,password,image) 
+        VALUES ('$firstname','$lastname','$email','$date','$password','$image')");
+        $msg10="<div class='success'>You are Successfully Registered !</div>";
+        $firstname='';$lastname='';$email='';$date='';$password='';$c_password='';$image=''; 
+        }
+        else 
+        {
+          $msg7="<div class='error'>Please Upload a Image file</div>";
+        }
+
+ }
+} 
+?>
+
+
+<html>
+<head>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<link href='css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+<title>Signup form</title>
+<style type='text/css'>
+#body-bg{
+          background:url('') center no-repeat fixed; 
+
+         }
+.error{
+         color:red;
+         
+       }
+.success
+        {
+          color:green;
+          font-weight:bold;
+        }       
+
+
+
+</style>
+</head>
+<body id='body-bg'>
+<div class='container'>
+<div class='login-form col-md-4 offset-md-4'>
+ <div class='jumbotron' style='margin-top:20px; padding-top:20px;padding-bottom:30px;'>
+ <h3 align='center'>Sign Up</h3></br>
+ <center><?php echo $msg10; ?></center></br>
+ <form method='post' enctype='multipart/form-data'>
+  <div class='form-group'> 
+  <label>First Name :</label>
+  <input type='text' name='fname' placeholder='Enter First Name' class='form-control' value='<?php echo $firstname; ?>'> 
+  <?php echo $msg1; ?>
+   </div>
+   <div class='form-group'> 
+  <label>Last Name :</label>
+  <input type='text' name='lname' placeholder='Enter Last Name' class='form-control' value='<?php echo $lastname; ?>'> 
+  <?php echo $msg2; ?>
+   </div>
+   <div class='form-group'> 
+  <label>Email :</label>
+  <input type='email' name='mail' placeholder='Enter Email' class='form-control' value='<?php echo $email; ?>'> 
+  <?php echo $msg3; ?>
+   </div>
+   <div class='form-group'> 
+  <label>Date of Birth :</label>
+  <input type='date' name='dob' placeholder='Enter Date of Birth' class='form-control' value='<?php echo $date; ?>'> 
+  <?php echo $msg4; ?>
+   </div>
+   <div class='form-group'> 
+  <label>Password :</label>
+  <input type='password' name='pswd' placeholder='Create New Password' class='form-control' value='<?php echo $password; ?>'> 
+  <?php echo $msg5; ?>
+   </div>
+   <div class='form-group'> 
+  <label>Confirm Password :</label>
+  <input type='password' name='cpswd' placeholder='Confirm Password' class='form-control' value='<?php echo $c_password; ?>'> 
+  <?php echo $msg6; ?>
+   </div>
+   <div class='form-group'> 
+  <label>Profile Image :</label>
+  <input type='file' name='image' value='<?php echo $image; ?>'/>
+  <?php echo $msg7; ?> 
+   </div>
+   </br>
+   <div class='form-group'> 
+  <input type='checkbox' name='check' />
+  I Agree the terms and conditions
+  <?php echo $msg8; ?>
+   </div>
+   </br>
+   <center><input type='submit' value='Submit' name='submit' class='btn btn-outline-success' style='width:200px;' /></center></br>
+   <center><button class='btn btn-link' ><a href='login.php'>Already Registered</a></button></center>
+ </form>
+ </div>
+</div>
+</div>
+</body>
+</html>
+
+
+
+<?php
+include("include/config.php");
+session_start();
+include("include/functions.php");
+ if(logged_in())
+  {
+     header("location:login.php");
+  }
+
+  else if(isset($_COOKIE['ename'])) 
+  {
+    // echo "You are logged in through cookies";
+   $email=$_COOKIE['ename'];
+ $result=mysqli_query($con,"SELECT id,first_name,last_name,image FROM users WHERE mail='$email'");
+ $retrive=mysqli_fetch_array($result);
+ $id=$retrive['id'];
+ $firstname=$retrive['first_name'];
+ $lastname=$retrive['last_name'];
+ $image=$retrive['image'];
+
+
+
+?>
+
+<html>
+<head>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<link href='css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+<title>Profile Page</title>
+<style type='text/css'>
+ #body-bg{
+            background-color:#efefef;
+
+         }
+</style>
+</head>
+<body id='body-bg'>
+<div class='container-fluid' style='backgroun-color:#fff; padding-top:10px; margin-top:20px; margin-bottom:2px; width:1200px; height:640px;'>
+<h2 align='center'>Welcome<?php echo ucfirst($firstname)." ".ucfirst($lastname); ?></h2>
+<a href='logout.php'><button class='btn btn-outline-danger' style='float:right;'>Logout</button></a></br></br>
+<a href='change-password.php?id=<?php echo $id; ?>'><button class='btn btn-outline-primary' style='float:left;'>Change Password</button></a>
+<center><img src='users_image/<?php echo $image ?>' style='width:350px; height:300px' class='img-fluid img-thumbnail'></center>
+
+</div>
+</body>
+</html>
+<?php
+  }
+  else {
+   //echo "You are logged in through session";
+       $email=$_SESSION['mail'];
+       $result=mysqli_query($con,"SELECT id,first_name,last_name,image FROM users WHERE mail='$email'");
+       $retrive=mysqli_fetch_array($result);
+       $id=$retrive['id'];
+       $firstname=$retrive['first_name'];
+       $lastname=$retrive['last_name'];
+       $image=$retrive['image'];
+      
+      
+      
+      ?>
+      
+      <html>
+      <head>
+      <link href='css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+      <title>Profile Page</title>
+      <style type='text/css'>
+       #body-bg{
+                  background-color:#efefef;
+      
+               }
+      </style>
+      </head>
+      <body id='body-bg'>
+      <div class='container-fluid' style='backgroun-color:#fff; padding-top:10px; margin-top:20px; margin-bottom:2px; width:1200px; height:640px;'>
+      <h2 align='center'>Welcome<?php echo ucfirst($firstname)." ".ucfirst($lastname)?></h2>
+      <a href='logout.php'><button class='btn btn-outline-danger' style='float:right;'>Logout</button></a></br></br>
+      <a href='change-password.php?id=<?php echo $id; ?>'><button class='btn btn-outline-primary' style='float:left;'>Change Password</button></a>
+      <center><img src='users_image/<?php echo $image ?>' style='width:350px; height:300px' class='img-fluid img-thumbnail'></center>
+      
+      </div>
+      </body>
+      </html>
+      <?php
+      }
+     ?>
+
+
+
+ <!-- <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 p">
+        <div class="sold">SOLD</div>
+                    <div class="card">
+                    <img class="card-img-top" src="image/mulund_west-mumbai.webp" alt="" width="286" height="180">
+                    <div class="card-body">
+                    <div class="property-price">&#8377;20,00000</div>   
+                            <div class="property-detail">2 BHK Apartment</div>
+                            <div class="property-title">
+                                Geras Song Of Joy, Kharadi, Pune</div> 
+                            <div class="property-area"> 1200 sq.ft</div>
+                    </div>
+             </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 p">
+        <div class="sold">SOLD</div>
+                <div class="card">
+                    <img class="card-img-top" src="image/mulund_west-mumbai.webp" alt="" width="286" height="180">
+                        <div class="card-body">
+                        <div class="property-price">&#8377;40,00000</div>   
+                            <div class="property-detail">2 BHK Apartment</div>
+                            <div class="property-title">
+                                Geras Song Of Joy, Kharadi, Pune</div> 
+                            <div class="property-area"> 1200 sq.ft</div>
+                        </div>
+                    </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 p">
+        <div class="sold">SOLD</div>
+                <div class="card">
+                    <img class="card-img-top" src="image/mulund_west-mumbai.webp" alt="" width="286" height="180">
+                        <div class="card-body">
+                        <div class="property-price">&#8377;40,00000</div>   
+                            <div class="property-detail">2 BHK Apartment</div>
+                            <div class="property-title">
+                                Geras Song Of Joy, Kharadi, Pune</div> 
+                            <div class="property-area"> 1200 sq.ft</div>
+                        </div>
+                    </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 p">
+        <div class="sold">SOLD</div>
+                <div class="card">
+                    <img class="card-img-top" src="image/mulund_west-mumbai.webp" alt="" width="286" height="180">
+                        <div class="card-body">
+                        <div class="property-price">&#8377;40,00000</div>   
+                            <div class="property-detail">2 BHK Apartment</div>
+                            <div class="property-title">
+                                Geras Song Of Joy, Kharadi, Pune</div> 
+                            <div class="property-area"> 1200 sq.ft</div>
+                        </div>
+                    </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 p">
+        <div class="sold">SOLD</div>
+                <div class="card">
+                    <img class="card-img-top" src="image/mulund_west-mumbai.webp" alt="" width="286" height="180">
+                        <div class="card-body">
+                        <div class="property-price">&#8377;40,00000</div>   
+                            <div class="property-detail">2 BHK Apartment</div>
+                            <div class="property-title">
+                                Geras Song Of Joy, Kharadi, Pune</div> 
+                            <div class="property-area"> 1200 sq.ft</div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+rent
+<div class="container">
+    <div class="row sold_property">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 p">
+                <div class="sold">Rent</div>
+                        <div class="card">
+                        <img class="card-img-top" src="image/mulund_west-mumbai.webp" alt="" width="286" height="180">
+                        <div class="card-body">
+                        <div class="property-price">&#8377;30,000</div>   
+                                    <div class="property-detail">2 BHK Apartment</div>
+                                    <div class="property-title">
+                                        Geras Song Of Joy, Kharadi, Pune</div> 
+                                    <div class="property-area"> 1200 sq.ft</div>
+                            
+                        </div>
+                        </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 p">
+                <div class="sold">Rent</div>
+                        <div class="card">
+                        <img class="card-img-top" src="image/mulund_west-mumbai.webp" alt="" width="286" height="180">
+                        <div class="card-body">
+                        <div class="property-price">&#8377;30,000</div>   
+                                <div class="property-detail">2 BHK Apartment</div>
+                                <div class="property-title">
+                                    Geras Song Of Joy, Kharadi, Pune</div> 
+                                <div class="property-area"> 1200 sq.ft</div>
+                            
+                        </div>
+                </div> 
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 p">
+                <div class="sold">Rent</div>
+                    <div class="card">
+                        <img class="card-img-top" src="image/mulund_west-mumbai.webp" alt="" width="286" height="180">
+                            <div class="card-body">
+                                <div class="property-price">&#8377;30,000</div>   
+                                <div class="property-detail">2 BHK Apartment</div>
+                                <div class="property-title">
+                                    Geras Song Of Joy, Kharadi, Pune</div> 
+                                <div class="property-area"> 1200 sq.ft</div>
+                            </div>
+                        </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 p">
+            <div class="sold">Rent</div>
+                <div class="card">
+                    <img class="card-img-top" src="image/mulund_west-mumbai.webp" alt="" width="286" height="180">
+                        <div class="card-body">
+                            <div class="property-price">&#8377;30,000</div>   
+                            <div class="property-detail">2 BHK Apartment</div>
+                            <div class="property-title">
+                                Geras Song Of Joy, Kharadi, Pune</div> 
+                            <div class="property-area"> 1200 sq.ft</div>
+                        </div>
+                    </div>    
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 p">
+            <div class="sold">Rent</div>
+                <div class="card">
+                    <img class="card-img-top" src="image/mulund_west-mumbai.webp" alt="" width="286" height="180">
+                        <div class="card-body">
+                            <div class="property-price">&#8377;30,000</div>   
+                            <div class="property-detail">2 BHK Apartment</div>
+                            <div class="property-title">
+                                Geras Song Of Joy, Kharadi, Pune</div> 
+                            <div class="property-area"> 1200 sq.ft</div>
+                        </div>
+                    </div>    
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 p">
+            <div class="sold">Rent</div>
+                <div class="card">
+                    <img class="card-img-top" src="image/mulund_west-mumbai.webp" alt="" width="286" height="180">
+                        <div class="card-body">
+                            <div class="property-price">&#8377;30,000</div>   
+                            <div class="property-detail">2 BHK Apartment</div>
+                            <div class="property-title">
+                                Geras Song Of Joy, Kharadi, Pune</div> 
+                            <div class="property-area"> 1200 sq.ft</div>
+                        </div>
+                    </div>    
+            </div> 
+            -->  

@@ -1,0 +1,11 @@
+.upload_property{
+    margin-top:15px;
+}
+.upload_property .heading_{
+   color:#444;
+   font-weight:900;
+}
+.upload_property .fa .fa-chevron-circle-left{
+    background: #fff!important;
+    color: #444;;
+}
